@@ -12,7 +12,7 @@ from pathlib import Path
 import pytest
 
 import agentkart as lib
-from agentkart.core.errors import ConfigError
+from agentkart.core.errors import ConfigError, ModelError
 from agentkart.core.providers import available_providers, resolve_model, split_spec
 from agentkart.core.retrieval import (
     EmbeddingSelector,
@@ -91,6 +91,19 @@ class TestResolution:
         )
         assert model.max_tokens == 1234
 
+    @needs_boto3
+    def test_a_missing_region_is_reported_clearly(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        """botocore's NoRegionError arrives six frames deep and names nothing useful."""
+        for var in ("AWS_REGION", "AWS_DEFAULT_REGION", "AWS_PROFILE"):
+            monkeypatch.delenv(var, raising=False)
+        monkeypatch.setattr(
+            "boto3.Session", lambda *a, **k: type("S", (), {"region_name": None})()
+        )
+        with pytest.raises(ModelError, match="no AWS region"):
+            resolve_model("bedrock:amazon.nova-pro-v1:0")
+
     def test_available_providers_checks_the_sdk_not_the_backend(self) -> None:
         """Backends import their SDK lazily; importing one proves nothing."""
         status = available_providers()
@@ -108,7 +121,14 @@ class TestAgentAcceptsAnyProvider:
     @needs_boto3
     def test_a_model_spec_string_selects_the_backend(self, tmp_path: Path) -> None:
         (tmp_path / "pyproject.toml").write_text("[project]\n", encoding="utf-8")
-        dev = lib.code(project=tmp_path, model="bedrock:amazon.nova-pro-v1:0")
+        # An explicit region: the test must not depend on the machine having
+        # AWS configured, which is exactly what made this pass locally and fail
+        # on every CI runner.
+        dev = lib.code(
+            project=tmp_path,
+            model="bedrock:amazon.nova-pro-v1:0",
+            aws_region="us-east-1",
+        )
         assert type(dev.model).__name__ == "BedrockModel"
         assert dev.audit.manifest.model == "amazon.nova-pro-v1:0"
         dev.close()
@@ -126,6 +146,7 @@ class TestAgentAcceptsAnyProvider:
         """AGENT_MODEL changes the provider with no code change."""
         (tmp_path / "pyproject.toml").write_text("[project]\n", encoding="utf-8")
         monkeypatch.setenv("AGENT_MODEL", "bedrock:amazon.nova-lite-v1:0")
+        monkeypatch.setenv("AWS_REGION", "us-east-1")
         dev = lib.code(project=tmp_path)
         assert type(dev.model).__name__ == "BedrockModel"
         dev.close()

@@ -86,7 +86,19 @@ class BedrockModel:
             ) from exc
 
         session = boto3.Session(profile_name=profile) if profile else boto3.Session()
-        self._client = session.client("bedrock-runtime", region_name=region, **client_kwargs)
+        resolved_region = region or session.region_name
+        if not resolved_region:
+            raise ModelError(
+                "no AWS region for Bedrock. Pass region=..., set AWS_REGION, or put a "
+                "region in your AWS profile. Without one botocore fails several frames "
+                "deep with an error that says nothing about agentkart."
+            )
+        try:
+            self._client = session.client(
+                "bedrock-runtime", region_name=resolved_region, **client_kwargs
+            )
+        except Exception as exc:  # noqa: BLE001 - normalise botocore's setup errors
+            raise ModelError(f"could not create a Bedrock client: {exc}") from exc
 
     # -- transcript encoding ------------------------------------------------
 
