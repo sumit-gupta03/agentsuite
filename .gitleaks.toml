@@ -1,0 +1,30 @@
+# gitleaks configuration
+#
+# This repository contains a redaction layer (agentkart/core/audit.py) whose
+# tests must feed it credential-shaped strings to prove the redaction works.
+# Those strings are synthetic placeholders -- each carrying an EXAMPLE or FAKE
+# marker, or being AWS's own published documentation key -- and they are the
+# only credential-shaped strings in the tree.
+#
+# Verified: no real credential appears in any file, in any commit, anywhere in
+# this repository's history. See the audit note in CONTRIBUTING.md.
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Synthetic placeholders in the redaction and workspace boundary tests"
+paths = [
+  "tests/test_mcp_and_audit\\.py",
+  "tests/test_workspace\\.py",
+]
+
+[[allowlists]]
+description = "AWS's own documentation example access key, and self-marked placeholders"
+regexes = [
+  "AKIAIOSFODNN7EXAMPLE",
+  "EXAMPLE-NOT-A-REAL-KEY",
+  "EXAMPLENOTAREALTOKEN",
+  "FAKEPASSWORDEXAMPLE",
+  "fake-placeholder-value",
+]

@@ -97,6 +97,22 @@ merged. See [SECURITY.md](SECURITY.md) for the threat model.
 - Comments explain **why**. The code already says what.
 - Match the surrounding code. Do not reformat files your change does not touch.
 
+## Credentials in this repository
+
+There are none, and there never have been. The repository was scanned across
+every commit and every path in its history for key, token, private-key and
+password patterns.
+
+The only credential-shaped strings are in `tests/test_mcp_and_audit.py` and
+`tests/test_workspace.py`. They exist to prove the redaction layer and the
+deny-list actually work, so they *have* to look like credentials. Each carries
+an `EXAMPLE` or `FAKE` marker, or is AWS's own published documentation key.
+`.gitleaks.toml` allowlists them so scanners do not cry wolf.
+
+If you add a fixture that looks like a secret, make it self-identifying and add
+it to that allowlist. Never paste a real value, even a revoked one -- git
+history is permanent and public.
+
 ## Reporting bugs
 
 Include the version, what you expected, what happened, and a minimal

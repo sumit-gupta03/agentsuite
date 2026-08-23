@@ -100,14 +100,23 @@ class TestMCPPolicy:
 
 
 class TestRedaction:
+    """Every string below is a synthetic placeholder, never a real credential.
+
+    They must look credential-shaped or they would not exercise the redaction
+    they exist to prove. Each is deliberately self-identifying -- an EXAMPLE or
+    FAKE marker, or AWS's own published documentation key. A secret scanner
+    flagging this file is a false positive; see ``.gitleaks.toml``.
+    """
+
     @pytest.mark.parametrize(
         "text",
         [
-            "ANTHROPIC_API_KEY=sk-ant-api03-abcdefghijklmnopqrstuvwxyz012345",
-            "token: ghp_abcdefghijklmnopqrstuvwxyz0123456789",
+            "ANTHROPIC_API_KEY=sk-ant-api03-EXAMPLE-NOT-A-REAL-KEY-00000000",
+            "token: ghp_EXAMPLENOTAREALTOKEN000000000000",
+            # AWS's own documentation example key. Ends in EXAMPLE by design.
             "aws_access_key_id = AKIAIOSFODNN7EXAMPLE",
-            "password: hunter2000",
-            "postgresql://user:sup3rs3cret@host/db",
+            "password: fake-placeholder-value",
+            "postgresql://user:FAKEPASSWORDEXAMPLE@host/db",
             "-----BEGIN RSA PRIVATE KEY-----",
         ],
     )
@@ -116,12 +125,13 @@ class TestRedaction:
         assert "REDACTED" in cleaned, f"missed a secret in {text!r}"
 
     def test_secret_value_does_not_survive(self) -> None:
-        assert "sup3rs3cret" not in redact("postgresql://user:sup3rs3cret@host/db")
-        assert "hunter2000" not in redact("password: hunter2000")
+        dsn = "postgresql://user:FAKEPASSWORDEXAMPLE@host/db"
+        assert "FAKEPASSWORDEXAMPLE" not in redact(dsn)
+        assert "fake-placeholder-value" not in redact("password: fake-placeholder-value")
 
     def test_context_survives_redaction(self) -> None:
         """A reviewer needs to see *what* was redacted, not a blank line."""
-        cleaned = redact("postgresql://user:sup3rs3cret@host/db")
+        cleaned = redact("postgresql://user:FAKEPASSWORDEXAMPLE@host/db")
         assert "postgresql://" in cleaned
         assert "host/db" in cleaned
 
