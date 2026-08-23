@@ -6,6 +6,29 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Fixed
+
+- `Config.max_tokens` no longer carries an Anthropic-shaped default of 16,000.
+  It defaults to `None`, meaning "whatever this backend's default is" -- Bedrock
+  models cap far lower (Nova Pro at 10k), so a shared default failed every
+  Bedrock session on the first call.
+- A missing AWS region is reported immediately and clearly, instead of surfacing
+  as botocore's `NoRegionError` six frames deep naming neither Bedrock nor this
+  library.
+- `agent.auto(model="bedrock:...")` now resolves the spec for routing too.
+  Previously the string was discarded and classification silently fell back to
+  the default provider, which usually has no credentials.
+- CI: the `dev` extra now includes `boto3` and `openai`, so the suite exercises
+  every backend it constructs rather than passing only on a machine that happens
+  to have them installed.
+
+### Added
+
+- `scripts/live_check.py` -- end-to-end verification against a real endpoint,
+  real files and a real database. Seven checks covering the warehouse and code
+  domains, reconciliation, routing, governance, and injection containment.
+
+
 ## [0.2.0]
 
 First public release.
@@ -36,8 +59,8 @@ First public release.
 
 ### Known limitations
 
-- The live Anthropic API call path (`ClaudeModel._stream`) is written and
-  type-checked but has not been exercised against the wire.
+- Only the Bedrock backend has been exercised against a live endpoint. The
+  Anthropic and OpenAI encodings are unit-tested; their transport is not.
 - Snowflake, BigQuery and Postgres adapters have not been run against real
   instances.
 - The MCP client's transport is untested against a live server; everything that

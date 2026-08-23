@@ -138,6 +138,30 @@ class TestDelegation:
         assert "testing" in router.active
         router.close()
 
+    def test_a_model_spec_string_is_resolved_for_routing_too(self, project: Path) -> None:
+        """Routing must use the provider the caller asked for.
+
+        Discarding the spec silently sent classification to the default provider,
+        which is a different provider and usually has no credentials -- so every
+        ambiguous prompt fell through to the fallback preset.
+        """
+        router = lib.auto(
+            project=project, model="bedrock:amazon.nova-lite-v1:0", aws_region="us-east-1"
+        )
+        assert type(router.model).__name__ == "BedrockModel"
+        router.close()
+
+    def test_routing_model_can_differ_from_the_working_model(self, project: Path) -> None:
+        router = lib.auto(
+            project=project,
+            model="bedrock:amazon.nova-pro-v1:0",
+            routing_model="bedrock:amazon.nova-micro-v1:0",
+            aws_region="us-east-1",
+        )
+        assert router.model.model_id == "amazon.nova-micro-v1:0"
+        assert router.session["model"] == "bedrock:amazon.nova-pro-v1:0"
+        router.close()
+
     def test_session_settings_reach_the_built_agent(self, project: Path, fake_model) -> None:  # type: ignore[no-untyped-def]
         router = lib.auto(project=project, write=True, model=fake_model(["ok"]))
         built = router.agent_for("testing")

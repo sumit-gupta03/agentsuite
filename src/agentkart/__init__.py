@@ -277,16 +277,28 @@ def auto(**session: Any) -> Any:
     ``on_route``. Everything else -- ``model`` included -- is session
     configuration passed to each agent.
     """
+    # `model` stays in the session so the delegated agents use it, and doubles as
+    # the classifier unless a separate routing_model is supplied. A spec string is
+    # resolved here rather than discarded -- otherwise routing silently falls back
+    # to the default provider, which is a different provider from the one the
+    # caller asked for and usually has no credentials.
+    from .core.providers import resolve_model
     from .core.router import Router
 
-    # `model` stays in the session so the delegated agents use it, and doubles as
-    # the classifier unless a separate routing_model is supplied.
-    routing_model = session.pop("routing_model", None) or session.get("model")
+    spec = session.pop("routing_model", None) or session.get("model")
+    classifier = None
+    if spec is not None:
+        classifier = resolve_model(
+            spec,
+            region=session.get("aws_region"),
+            profile=session.get("aws_profile"),
+            base_url=session.get("base_url"),
+        )
 
     return Router(
         presets=tuple(session.pop("presets", ()) or ()),
         fallback=session.pop("fallback", "python"),
-        model=routing_model if not isinstance(routing_model, str) else None,
+        model=classifier,
         on_route=session.pop("on_route", None),
         session=session,
     )

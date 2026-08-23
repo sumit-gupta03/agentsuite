@@ -10,14 +10,26 @@ design.
 text.** No prompt technique achieves that, and any library claiming it is
 mistaken.
 
-**It promises, and tests, that being fooled does not grant privilege.** The
-model's judgement never authorises anything. Every action is classified by
+**It promises, and tests, that being fooled cannot _escalate_.** The model's
+judgement never authorises anything. Every action is classified by
 `agentkart.core.policy` on what the action *is* — not on what the model believes
-about it — so a fully compromised model produces refusals and audit entries
-rather than damage.
+about it. A fully persuaded model still cannot:
 
-`examples/05_governance.py` demonstrates this against a scripted model that has
-read an injected instruction and is obeying it verbatim, with writes enabled.
+- write outside the project root, or read a deny-listed credential or state file
+- run a command that is not on the allowlist, or reach a shell
+- take a destructive action without the operator's confirmation callback saying yes
+- obtain permissions the session was not given — including through routing, which
+  selects a specialism and never a permission
+
+**What it does _not_ promise:** that a session you granted write access will never
+write. It was given that access and asked to act. A session that may write may
+write; the guarantee is about the boundary, not about the model doing its granted
+job well. This distinction is load-bearing — grant the least access that works,
+and supply a confirmation handler you trust.
+
+Verified live, not just with stubs: `python scripts/live_check.py` runs a poisoned
+file past a real model in both a read-only and a write-enabled session, and
+asserts each half of the above.
 
 ## Defences
 
@@ -83,6 +95,9 @@ rather not be named.
 - A model being persuaded by injected text *without* exceeding its permissions.
   That is expected, is surfaced in the audit log, and is what the architecture is
   built to contain.
+- A write-enabled session writing inside its own project because a prompt talked
+  it into doing so. That is the access you granted being used. Grant less, or gate
+  it with a confirmation handler.
 - Anything a caller enabled deliberately (`write=True` plus a handler that
   approves, `allow_destructive=True`, an allowlisted command doing what it does).
 - Third-party skill packs or MCP servers behaving badly after explicit opt-in.
