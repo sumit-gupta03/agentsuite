@@ -6,6 +6,7 @@ whichever LLM you actually have, and pay for only the skills a request needs.
 
 from __future__ import annotations
 
+from importlib.util import find_spec
 from pathlib import Path
 
 import pytest
@@ -20,6 +21,11 @@ from agentkart.core.retrieval import (
     worth_retrieving,
 )
 from agentkart.core.skills import Skill
+
+#: These construct a real backend, so they need the optional SDK present.
+needs_boto3 = pytest.mark.skipif(
+    find_spec("boto3") is None, reason="boto3 not installed"
+)
 
 
 class TestSpecParsing:
@@ -99,6 +105,7 @@ class TestResolution:
 
 
 class TestAgentAcceptsAnyProvider:
+    @needs_boto3
     def test_a_model_spec_string_selects_the_backend(self, tmp_path: Path) -> None:
         (tmp_path / "pyproject.toml").write_text("[project]\n", encoding="utf-8")
         dev = lib.code(project=tmp_path, model="bedrock:amazon.nova-pro-v1:0")
@@ -112,6 +119,7 @@ class TestAgentAcceptsAnyProvider:
         assert type(dev.model).__name__ == "ClaudeModel"
         dev.close()
 
+    @needs_boto3
     def test_config_can_select_the_provider(
         self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:
