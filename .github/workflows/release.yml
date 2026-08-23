@@ -1,0 +1,80 @@
+name: Release
+
+# Publishes to PyPI when a version tag is pushed.
+#
+# Uses trusted publishing (OIDC) rather than a stored API token: configure the
+# publisher once at https://pypi.org/manage/project/<name>/settings/publishing/
+# and there is no secret to leak or rotate.
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: python -m pip install build twine
+
+      # A tag that disagrees with the packaged version ships the wrong thing.
+      - name: Tag must match the package version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          python - <<'PY'
+          import os, pathlib, re, sys
+          tag = os.environ["GITHUB_REF_NAME"].lstrip("v")
+          text = pathlib.Path("pyproject.toml").read_text(encoding="utf-8")
+          match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.M)
+          version = match.group(1) if match else "?"
+          print(f"tag={tag} pyproject={version}")
+          if tag != version:
+              sys.exit(f"tag {tag!r} does not match pyproject version {version!r}")
+          PY
+
+      - run: python -m build
+      - run: twine check dist/*
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+
+  testpypi:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: testpypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+
+  pypi:
+    needs: testpypi
+    runs-on: ubuntu-latest
+    # Requires a manual approval on the `pypi` environment, so a stray tag
+    # cannot publish on its own.
+    environment: pypi
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - uses: pypa/gh-action-pypi-publish@release/v1
