@@ -146,7 +146,10 @@ class TestAgentAcceptsAnyProvider:
         """AGENT_MODEL changes the provider with no code change."""
         (tmp_path / "pyproject.toml").write_text("[project]\n", encoding="utf-8")
         monkeypatch.setenv("AGENT_MODEL", "bedrock:amazon.nova-lite-v1:0")
-        monkeypatch.setenv("AWS_REGION", "us-east-1")
+        # AGENT_OPT_<NAME> is the library's own channel for domain options, so
+        # this covers that mechanism too rather than relying on boto3 picking
+        # up AWS_REGION (it reads AWS_DEFAULT_REGION).
+        monkeypatch.setenv("AGENT_OPT_AWS_REGION", "us-east-1")
         dev = lib.code(project=tmp_path)
         assert type(dev.model).__name__ == "BedrockModel"
         dev.close()
