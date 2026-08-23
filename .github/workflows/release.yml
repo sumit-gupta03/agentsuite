@@ -10,6 +10,11 @@ on:
   push:
     tags: ["v*"]
   workflow_dispatch:
+    inputs:
+      testpypi:
+        description: "Publish to TestPyPI first (needs a TestPyPI trusted publisher)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -48,8 +53,12 @@ jobs:
           name: dist
           path: dist/
 
+  # Opt-in. TestPyPI is a separate account with its own trusted publisher, and
+  # the artefact is already validated by `twine check` and the CI build job, so
+  # a missing TestPyPI account should not block a real release.
   testpypi:
     needs: build
+    if: inputs.testpypi
     runs-on: ubuntu-latest
     environment: testpypi
     permissions:
@@ -65,7 +74,10 @@ jobs:
           skip-existing: true
 
   pypi:
-    needs: testpypi
+    needs: [build, testpypi]
+    # `always()` so a skipped TestPyPI job does not skip this one, while a
+    # TestPyPI job that actually ran and failed still stops the release.
+    if: always() && needs.build.result == 'success' && needs.testpypi.result != 'failure'
     runs-on: ubuntu-latest
     # Requires a manual approval on the `pypi` environment, so a stray tag
     # cannot publish on its own.
