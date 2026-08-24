@@ -10,7 +10,7 @@ visible here.
 
 from __future__ import annotations
 
-import agentkart as agent
+import agentsuite as agent
 
 
 def main() -> None:
@@ -48,7 +48,7 @@ def main() -> None:
         "on demand via the load_skill tool -- which is why a large library stays\n"
         "affordable, and why agent.skills_used tells you what actually mattered.\n"
         "\n"
-        "The shared rules come from agentkart.core.prompts; the warehouse paragraph\n"
+        "The shared rules come from agentsuite.core.prompts; the warehouse paragraph\n"
         "comes from the domain. Adding a domain does not touch the core prompt."
     )
 

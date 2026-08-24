@@ -11,16 +11,16 @@ from pathlib import Path
 
 import pytest
 
-import agentkart as lib
-from agentkart.core.errors import ConfigError, ModelError
-from agentkart.core.providers import available_providers, resolve_model, split_spec
-from agentkart.core.retrieval import (
+import agentsuite as lib
+from agentsuite.core.errors import ConfigError, ModelError
+from agentsuite.core.providers import available_providers, resolve_model, split_spec
+from agentsuite.core.retrieval import (
     EmbeddingSelector,
     KeywordSelector,
     describe_selection,
     worth_retrieving,
 )
-from agentkart.core.skills import Skill
+from agentsuite.core.skills import Skill
 
 #: These construct a real backend, so they need the optional SDK present.
 needs_boto3 = pytest.mark.skipif(

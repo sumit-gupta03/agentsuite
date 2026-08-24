@@ -8,8 +8,8 @@ from __future__ import annotations
 
 import pytest
 
-from agentkart.core.policy import Action, Policy
-from agentkart.domains.dataengineering.policy import SqlPolicy, apply_limit, referenced_tables
+from agentsuite.core.policy import Action, Policy
+from agentsuite.domains.dataengineering.policy import SqlPolicy, apply_limit, referenced_tables
 
 
 class _ScriptedPolicy(Policy):

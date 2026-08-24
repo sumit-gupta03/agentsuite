@@ -11,7 +11,7 @@ from __future__ import annotations
 
 import pytest
 
-from agentkart.core.untrusted import (
+from agentsuite.core.untrusted import (
     SYSTEM_RULE,
     fence,
     new_nonce,

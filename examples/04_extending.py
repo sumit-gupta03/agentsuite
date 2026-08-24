@@ -16,9 +16,9 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-import agentkart as agent
-from agentkart.core.domain import Domain
-from agentkart.core.policy import Action, Policy
+import agentsuite as agent
+from agentsuite.core.domain import Domain
+from agentsuite.core.policy import Action, Policy
 
 # --- 1. A skill file -------------------------------------------------------
 # In a real project this lives at .agentlib/skills/<name>/SKILL.md (all domains)

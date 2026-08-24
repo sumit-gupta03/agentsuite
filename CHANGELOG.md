@@ -35,7 +35,7 @@ First public release.
 
 ### Added
 
-- **Core** (`agentkart.core`) — agent loop, skill loader with seven-tier precedence,
+- **Core** (`agentsuite.core`) — agent loop, skill loader with seven-tier precedence,
   tool registry, `Model` protocol, permission layer, audit log, MCP client.
   Domain-agnostic; adding a domain does not change it.
 - **Data engineering domain** — SQL policy, five warehouse adapters (SQLite,
@@ -67,5 +67,5 @@ First public release.
   decides whether an MCP call is permitted is covered.
 - Claude is the only implemented `Model` backend.
 
-[Unreleased]: https://github.com/sumit-gupta03/agentkart/compare/v0.2.0...HEAD
-[0.2.0]: https://github.com/sumit-gupta03/agentkart/releases/tag/v0.2.0
+[Unreleased]: https://github.com/sumit-gupta03/agentsuite/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/sumit-gupta03/agentsuite/releases/tag/v0.2.0

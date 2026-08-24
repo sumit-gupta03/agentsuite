@@ -2,7 +2,7 @@
 
 Two halves, shown separately:
 
-* :mod:`agentkart.core.policy` owns the *decision* -- tiers, the write gate, the
+* :mod:`agentsuite.core.policy` owns the *decision* -- tiers, the write gate, the
   confirmation gate, fail-closed. Every domain inherits it unchanged.
 * the domain owns the *classifier* -- here, what kind of SQL statement this is.
 
@@ -13,8 +13,8 @@ Adding a domain means writing the second half only.
 
 from __future__ import annotations
 
-from agentkart.core.policy import Action, Policy
-from agentkart.domains.dataengineering.policy import SqlPolicy
+from agentsuite.core.policy import Action, Policy
+from agentsuite.domains.dataengineering.policy import SqlPolicy
 
 STATEMENTS = [
     "SELECT * FROM orders",

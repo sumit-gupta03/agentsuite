@@ -2,7 +2,7 @@
 
 Everything here runs against the stdlib SQLite adapter, so the suite needs no
 database, no driver and no network. The agent tests drive the real loop through
-a scripted fake model implementing the :class:`~agentkart.core.model.Model` protocol
+a scripted fake model implementing the :class:`~agentsuite.core.model.Model` protocol
 -- which is the practical proof that the protocol is real and not decorative.
 """
 
@@ -15,8 +15,8 @@ from typing import Any
 
 import pytest
 
-from agentkart.core.types import ModelTurn, ToolCall, Usage
-from agentkart.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
+from agentsuite.core.types import ModelTurn, ToolCall, Usage
+from agentsuite.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
 
 
 @pytest.fixture

@@ -16,7 +16,7 @@ from pathlib import Path
 
 import pytest
 
-import agentkart as lib
+import agentsuite as lib
 
 POISONED_README = """\
 # Project

@@ -15,7 +15,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-import agentkart as agent
+import agentsuite as agent
 
 REQUESTS = [
     "the nightly spark job skews badly on customer_id, find out why",

@@ -11,9 +11,9 @@ from typing import Any
 
 import pytest
 
-from agentkart.core.bedrock import BedrockModel, _to_turn, _tool_spec
-from agentkart.core.errors import ModelError
-from agentkart.core.types import ToolResult
+from agentsuite.core.bedrock import BedrockModel, _to_turn, _tool_spec
+from agentsuite.core.errors import ModelError
+from agentsuite.core.types import ToolResult
 
 
 class StubClient:
@@ -219,7 +219,7 @@ class TestFailures:
 class TestAgentIntegration:
     def test_drives_the_real_agent_loop(self, tmp_path) -> None:  # type: ignore[no-untyped-def]
         """A Bedrock model must satisfy the Model protocol the loop expects."""
-        import agentkart as lib
+        import agentsuite as lib
 
         (tmp_path / "pyproject.toml").write_text("[project]\n", encoding="utf-8")
         (tmp_path / "notes.txt").write_text("hello", encoding="utf-8")

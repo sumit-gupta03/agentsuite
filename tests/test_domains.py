@@ -1,7 +1,7 @@
 """Domain resolution, presets, and the lazy top-level namespace.
 
 The point of this file: adding a domain or a preset must cost nothing in
-:mod:`agentkart.core`, and ``import agent`` must stay free however many exist.
+:mod:`agentsuite.core`, and ``import agent`` must stay free however many exist.
 """
 
 from __future__ import annotations
@@ -12,9 +12,9 @@ import sys
 
 import pytest
 
-import agentkart as lib
-from agentkart.core.domain import Domain, DomainRegistry, resolve_preset
-from agentkart.core.errors import ConfigError
+import agentsuite as lib
+from agentsuite.core.domain import Domain, DomainRegistry, resolve_preset
+from agentsuite.core.errors import ConfigError
 
 
 class TestRegistry:
@@ -91,12 +91,12 @@ class TestNamespace:
         assert "snowflake" in lib.list_presets()["dataengineering"]
 
     def test_domains_subpackage_does_not_shadow_the_listing(self) -> None:
-        """`agentkart.domains` is the subpackage; the listing function is list_domains.
+        """`agentsuite.domains` is the subpackage; the listing function is list_domains.
 
-        Importing any domain sets ``agentkart.domains`` to the subpackage, so a
+        Importing any domain sets ``agentsuite.domains`` to the subpackage, so a
         function of that name would silently stop being callable.
         """
-        import agentkart.domains.dataengineering  # noqa: F401
+        import agentsuite.domains.dataengineering  # noqa: F401
 
         assert callable(lib.list_domains)
         assert lib.list_domains()
@@ -119,10 +119,10 @@ class TestImportPurity:
         later tests would compare a fresh ToolError against a stale one.
         """
         script = (
-            "import sys, json; import agentkart; "
+            "import sys, json; import agentsuite; "
             "print(json.dumps({"
-            "'submodules': sorted(m for m in sys.modules if m.startswith('agentkart.')), "
-            "'version': agentkart.__version__}))"
+            "'submodules': sorted(m for m in sys.modules if m.startswith('agentsuite.')), "
+            "'version': agentsuite.__version__}))"
         )
         result = subprocess.run(
             [sys.executable, "-c", script], capture_output=True, text=True, check=True
@@ -132,10 +132,10 @@ class TestImportPurity:
         assert payload["version"]
 
     def test_attribute_access_resolves_lazily(self) -> None:
-        import agentkart as agent
+        import agentsuite as agent
 
         assert agent.Agent is not None
-        assert "agentkart.core.loop" in sys.modules
+        assert "agentsuite.core.loop" in sys.modules
 
 
 class TestDbtGating:

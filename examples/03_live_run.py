@@ -16,8 +16,8 @@ from __future__ import annotations
 import os
 import sys
 
-import agentkart as agent
-from agentkart.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
+import agentsuite as agent
+from agentsuite.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
 
 SEED = """
 CREATE TABLE orders (

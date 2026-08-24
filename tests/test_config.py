@@ -8,11 +8,11 @@ from pathlib import Path
 
 import pytest
 
-from agentkart.core.config import Config, find_project_config, load_config
-from agentkart.core.errors import ConfigError
-from agentkart.domains.dataengineering.errors import WarehouseError
-from agentkart.domains.dataengineering.warehouse import connect, load_adapter
-from agentkart.domains.dataengineering.warehouse.base import TableRef
+from agentsuite.core.config import Config, find_project_config, load_config
+from agentsuite.core.errors import ConfigError
+from agentsuite.domains.dataengineering.errors import WarehouseError
+from agentsuite.domains.dataengineering.warehouse import connect, load_adapter
+from agentsuite.domains.dataengineering.warehouse.base import TableRef
 
 
 class TestConfigPrecedence:
@@ -193,7 +193,7 @@ class TestWarehouseResolution:
     def test_missing_driver_names_the_extra(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setitem(sys.modules, "duckdb", None)
         monkeypatch.delitem(
-            sys.modules, "agentkart.domains.dataengineering.warehouse.duckdb_adapter", raising=False
+            sys.modules, "agentsuite.domains.dataengineering.warehouse.duckdb_adapter", raising=False
         )
         with pytest.raises(WarehouseError, match=r"agent\[duckdb\]"):
             load_adapter("duckdb")

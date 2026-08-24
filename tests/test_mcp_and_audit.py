@@ -11,9 +11,9 @@ from pathlib import Path
 
 import pytest
 
-from agentkart.core.audit import AuditLog, RunManifest, redact
-from agentkart.core.errors import ConfigError
-from agentkart.core.mcp import DEFAULT_TIER, MCPServer, MCPToolPolicy, servers_from_config
+from agentsuite.core.audit import AuditLog, RunManifest, redact
+from agentsuite.core.errors import ConfigError
+from agentsuite.core.mcp import DEFAULT_TIER, MCPServer, MCPToolPolicy, servers_from_config
 
 
 class TestMCPConfiguration:

@@ -12,7 +12,7 @@ mistaken.
 
 **It promises, and tests, that being fooled cannot _escalate_.** The model's
 judgement never authorises anything. Every action is classified by
-`agentkart.core.policy` on what the action *is* — not on what the model believes
+`agentsuite.core.policy` on what the action *is* — not on what the model believes
 about it. A fully persuaded model still cannot:
 
 - write outside the project root, or read a deny-listed credential or state file
@@ -72,7 +72,7 @@ asserts each half of the above.
 Please **do not open a public issue** for a security problem.
 
 Report it privately through GitHub's **Report a vulnerability** button, on the
-Security tab of https://github.com/sumit-gupta03/agentkart. Include a
+Security tab of https://github.com/sumit-gupta03/agentsuite. Include a
 description, the version, and a reproduction if you have one.
 
 That channel is private and does not require publishing an email address.

@@ -12,8 +12,8 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-import agentkart as agent
-from agentkart.core.types import ModelTurn, ToolCall, Usage
+import agentsuite as agent
+from agentsuite.core.types import ModelTurn, ToolCall, Usage
 
 POISONED = """\
 # Deployment notes

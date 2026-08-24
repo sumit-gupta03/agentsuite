@@ -25,8 +25,8 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
-import agentkart as agent
-from agentkart.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
+import agentsuite as agent
+from agentsuite.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
 
 DEFAULT_MODEL = "bedrock:amazon.nova-pro-v1:0"
 

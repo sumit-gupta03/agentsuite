@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from agentkart.core.errors import SkillError
-from agentkart.core.skills import (
+from agentsuite.core.errors import SkillError
+from agentsuite.core.skills import (
     Skill,
     discover_dir,
     find_project_skills_dir,
@@ -15,7 +15,7 @@ from agentkart.core.skills import (
     render_index,
     resolve_skills,
 )
-from agentkart.domains.dataengineering import DOMAIN as DE_DOMAIN
+from agentsuite.domains.dataengineering import DOMAIN as DE_DOMAIN
 
 BUNDLED = DE_DOMAIN.skills_dir
 
@@ -156,7 +156,7 @@ class TestPrecedence:
             called = True
             return []
 
-        monkeypatch.setattr("agentkart.core.skills.discover_plugins", spy)
+        monkeypatch.setattr("agentsuite.core.skills.discover_plugins", spy)
         resolve_skills(capabilities=None)
         assert not called, "installed packages must not inject skills without opt-in"
 

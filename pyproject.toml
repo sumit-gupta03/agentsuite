@@ -3,7 +3,7 @@ requires = ["hatchling>=1.24"]
 build-backend = "hatchling.build"
 
 [project]
-name = "agentkart"
+name = "agentsuite"
 version = "0.2.0"
 description = "One skill-driven agent core, many domains."
 readme = "README.md"
@@ -40,12 +40,12 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/sumit-gupta03/agentkart"
-Documentation = "https://github.com/sumit-gupta03/agentkart#readme"
-Repository = "https://github.com/sumit-gupta03/agentkart"
-Issues = "https://github.com/sumit-gupta03/agentkart/issues"
-Changelog = "https://github.com/sumit-gupta03/agentkart/blob/main/CHANGELOG.md"
-Security = "https://github.com/sumit-gupta03/agentkart/blob/main/SECURITY.md"
+Homepage = "https://github.com/sumit-gupta03/agentsuite"
+Documentation = "https://github.com/sumit-gupta03/agentsuite#readme"
+Repository = "https://github.com/sumit-gupta03/agentsuite"
+Issues = "https://github.com/sumit-gupta03/agentsuite/issues"
+Changelog = "https://github.com/sumit-gupta03/agentsuite/blob/main/CHANGELOG.md"
+Security = "https://github.com/sumit-gupta03/agentsuite/blob/main/SECURITY.md"
 
 [project.optional-dependencies]
 duckdb = ["duckdb>=1.0"]
@@ -67,32 +67,32 @@ dev = [
     "openai>=1.40",
 ]
 all = [
-    "agentkart[duckdb]",
-    "agentkart[postgres]",
-    "agentkart[snowflake]",
-    "agentkart[bigquery]",
-    "agentkart[dbt]",
-    "agentkart[mcp]",
-    "agentkart[bedrock]",
-    "agentkart[openai]",
+    "agentsuite[duckdb]",
+    "agentsuite[postgres]",
+    "agentsuite[snowflake]",
+    "agentsuite[bigquery]",
+    "agentsuite[dbt]",
+    "agentsuite[mcp]",
+    "agentsuite[bedrock]",
+    "agentsuite[openai]",
 ]
 
 [project.scripts]
-agentkart = "agentkart.cli:main"
-ak = "agentkart.cli:main"
+agentsuite = "agentsuite.cli:main"
+ags = "agentsuite.cli:main"
 
 # Third-party skill packs advertise themselves here (a module attribute holding
 # a directory path); see docs/SKILLS.md.
-[project.entry-points."agentkart.skills"]
+[project.entry-points."agentsuite.skills"]
 
 # Third-party domains advertise themselves here (an attribute holding a Domain).
 # Built-in domains are resolved directly and need no entry point.
-[project.entry-points."agentkart.domains"]
+[project.entry-points."agentsuite.domains"]
 
 [tool.hatch.build.targets.wheel]
 # Each domain's skills/ directory is package data, picked up automatically --
 # do not add a force-include, or the build fails on a duplicate archive entry.
-packages = ["src/agentkart"]
+packages = ["src/agentsuite"]
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -121,7 +121,7 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.ruff.lint.per-file-ignores]
 # Re-exports for type checkers; the runtime __all__ is computed from _EXPORTS.
-"src/agentkart/__init__.py" = ["F401"]
+"src/agentsuite/__init__.py" = ["F401"]
 
 [tool.mypy]
 python_version = "3.10"

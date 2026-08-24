@@ -15,7 +15,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-import agentkart as agent
+import agentsuite as agent
 
 HOUSE_STYLE = """\
 ---

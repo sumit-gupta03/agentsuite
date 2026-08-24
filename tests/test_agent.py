@@ -11,9 +11,9 @@ from pathlib import Path
 
 import pytest
 
-import agentkart as lib
-from agentkart.core.errors import MaxTurnsExceeded
-from agentkart.core.loop import deny_all
+import agentsuite as lib
+from agentsuite.core.errors import MaxTurnsExceeded
+from agentsuite.core.loop import deny_all
 
 
 def build(model_cls, script, **kwargs):  # type: ignore[no-untyped-def]

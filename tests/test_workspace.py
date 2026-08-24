@@ -10,8 +10,8 @@ from pathlib import Path
 
 import pytest
 
-from agentkart.domains.code.errors import WorkspaceError
-from agentkart.domains.code.workspace import Workspace, open_workspace
+from agentsuite.domains.code.errors import WorkspaceError
+from agentsuite.domains.code.workspace import Workspace, open_workspace
 
 
 @pytest.fixture

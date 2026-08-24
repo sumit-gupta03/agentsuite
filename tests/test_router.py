@@ -11,9 +11,9 @@ from pathlib import Path
 
 import pytest
 
-import agentkart as lib
-from agentkart.core.errors import ConfigError
-from agentkart.core.router import Router, RoutingDecision
+import agentsuite as lib
+from agentsuite.core.errors import ConfigError
+from agentsuite.core.router import Router, RoutingDecision
 
 
 @pytest.fixture

@@ -113,7 +113,7 @@ That replaces the packaged `sql-review` entirely — it is a replacement, not a
 merge. Confirm it took effect:
 
 ```bash
-agentkart skills list        # source column should read [project]
+agentsuite skills list        # source column should read [project]
 ```
 
 To remove a bundled skill without replacing it:
@@ -144,7 +144,7 @@ Any package can advertise skills through an entry point:
 
 ```toml
 # pyproject.toml of agent-skills-databricks
-[project.entry-points."agentkart.skills"]
+[project.entry-points."agentsuite.skills"]
 databricks = "de_skills_databricks:SKILLS_DIR"
 ```
 
@@ -169,10 +169,10 @@ is skipped. One broken pack never takes down the agent.
 ## Checking your work
 
 ```bash
-agentkart skills list                  # is it there, and from where?
-agentkart skills show my-skill         # frontmatter, files, full body
-agentkart skills path                  # where each source resolves to
-agentkart doctor                       # the exact system prompt
+agentsuite skills list                  # is it there, and from where?
+agentsuite skills show my-skill         # frontmatter, files, full body
+agentsuite skills path                  # where each source resolves to
+agentsuite doctor                       # the exact system prompt
 ```
 
 After a run, `agent.skills_used` tells you which skills the model actually

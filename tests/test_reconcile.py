@@ -8,11 +8,11 @@ from __future__ import annotations
 
 import pytest
 
-from agentkart.core.errors import ToolError
-from agentkart.domains.dataengineering import WarehouseContext
-from agentkart.domains.dataengineering.policy import SqlPolicy
-from agentkart.domains.dataengineering.tools import reconcile
-from agentkart.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
+from agentsuite.core.errors import ToolError
+from agentsuite.domains.dataengineering import WarehouseContext
+from agentsuite.domains.dataengineering.policy import SqlPolicy
+from agentsuite.domains.dataengineering.tools import reconcile
+from agentsuite.domains.dataengineering.warehouse.sqlite_adapter import SQLiteWarehouse
 
 
 @pytest.fixture

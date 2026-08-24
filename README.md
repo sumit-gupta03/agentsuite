@@ -1,17 +1,17 @@
-# agentkart
+# agentsuite
 
 One skill-driven agent core, many domains. LLM-powered, governed, injection-resistant,
 and small enough to read.
 
 ```bash
-pip install agentkart                    # core
-pip install "agentkart[bedrock]"         # + Amazon Bedrock (Nova, Claude, Llama)
-pip install "agentkart[openai]"          # + OpenAI
-pip install "agentkart[all]"             # + every warehouse, dbt and MCP
+pip install agentsuite                    # core
+pip install "agentsuite[bedrock]"         # + Amazon Bedrock (Nova, Claude, Llama)
+pip install "agentsuite[openai]"          # + OpenAI
+pip install "agentsuite[all]"             # + every warehouse, dbt and MCP
 ```
 
 ```python
-import agentkart as agent
+import agentsuite as agent
 
 de     = agent.snowflake()                     # data engineering, pinned to Snowflake
 dev    = agent.pyspark(project="./etl")        # code, with PySpark skills
@@ -33,9 +33,9 @@ session.run("fct_orders doesn't tie out against raw")       # -> reconciliation
 ```
 
 ```bash
-agentkart pyspark "why is the nightly job skewing?" -o project=./etl
-agentkart route "the spark job is skewing" -o project=./etl
-agentkart domains
+agentsuite pyspark "why is the nightly job skewing?" -o project=./etl
+agentsuite route "the spark job is skewing" -o project=./etl
+agentsuite domains
 ```
 
 ---
@@ -49,7 +49,7 @@ configuration, and costs no code at all.
 
 ```mermaid
 graph TD
-    subgraph core["agentkart.core &nbsp;·&nbsp; ~4,000 lines &nbsp;·&nbsp; flat forever"]
+    subgraph core["agentsuite.core &nbsp;·&nbsp; ~4,000 lines &nbsp;·&nbsp; flat forever"]
         LOOP[agent loop]
         SKILLS[skill loader]
         TOOLS[tool registry]
@@ -94,9 +94,9 @@ entry.
 
 | | lines | grows per domain? |
 |---|---|---|
-| `agentkart.core` | 4,061 | **no** |
-| `agentkart.domains.code` | 1,431 | — |
-| `agentkart.domains.dataengineering` | 2,015 | — |
+| `agentsuite.core` | 4,061 | **no** |
+| `agentsuite.domains.code` | 1,431 | — |
+| `agentsuite.domains.dataengineering` | 2,015 | — |
 | bundled skills (20 files) | 2,890 | — |
 | tests (317 passing) | 3,000 | — |
 
@@ -106,7 +106,7 @@ entry.
 sequenceDiagram
     autonumber
     participant You
-    participant Agent as agentkart
+    participant Agent as agentsuite
     participant LLM as Model
     participant Policy as Permission layer
     participant World as Warehouse / files
@@ -170,7 +170,7 @@ model.
 ## Importing is free
 
 ```python
-import agentkart as agent          # opens nothing, reads no credentials, calls no API
+import agentsuite as agent          # opens nothing, reads no credentials, calls no API
 ```
 
 Core names, domains and presets resolve lazily on first attribute access, so
@@ -185,7 +185,7 @@ subprocess.
 No prompt technique achieves that, and any library claiming it is wrong.
 
 **Promised, and tested:** *being fooled cannot escalate.* The model's judgement
-never authorises anything — every action is classified by `agentkart.core.policy`
+never authorises anything — every action is classified by `agentsuite.core.policy`
 on what the action *is*. A persuaded model cannot write outside the project, read
 a deny-listed credential file, run an unallowed command, or take a destructive
 action past your confirmation handler.
@@ -331,7 +331,7 @@ deny_tools = ["delete_repository"]
 ```
 
 ```bash
-pip install "agentkart[mcp]"
+pip install "agentsuite[mcp]"
 ```
 
 - Tools are namespaced `mcp__<server>__<tool>` — a server cannot shadow a built-in.
@@ -495,7 +495,7 @@ defaults rather than replacing them, so a project cannot widen its own boundary.
 | **Domain** | tools + policy + skills | a `Domain`, registered by entry point |
 
 ```toml
-[project.entry-points."agentkart.domains"]
+[project.entry-points."agentsuite.domains"]
 mlops = "agent_mlops:DOMAIN"
 ```
 
@@ -522,14 +522,14 @@ write = false
 ## CLI
 
 ```bash
-agentkart domains                          # what is installed
-agentkart pyspark "..." -o project=./etl   # one-shot against a preset
-agentkart chat -d code -o project=.        # interactive
-agentkart skills list -d code              # the catalogue, with sources
-agentkart skills show pytorch-training
-agentkart doctor -d code -o project=.      # resolved session + exact system prompt
-agentkart route "the spark job is skewing" # pick the specialist automatically
-agentkart init                             # scaffold ./.agentlib
+agentsuite domains                          # what is installed
+agentsuite pyspark "..." -o project=./etl   # one-shot against a preset
+agentsuite chat -d code -o project=.        # interactive
+agentsuite skills list -d code              # the catalogue, with sources
+agentsuite skills show pytorch-training
+agentsuite doctor -d code -o project=.      # resolved session + exact system prompt
+agentsuite route "the spark job is skewing" # pick the specialist automatically
+agentsuite init                             # scaffold ./.agentlib
 ```
 
 ## Warehouses

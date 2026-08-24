@@ -4,11 +4,11 @@ from __future__ import annotations
 
 import pytest
 
-from agentkart.core.errors import ToolError
-from agentkart.domains.dataengineering import WarehouseContext
-from agentkart.domains.dataengineering.policy import SqlPolicy
-from agentkart.domains.dataengineering.tools import profiling
-from agentkart.domains.dataengineering.tools import query as warehouse_tools
+from agentsuite.core.errors import ToolError
+from agentsuite.domains.dataengineering import WarehouseContext
+from agentsuite.domains.dataengineering.policy import SqlPolicy
+from agentsuite.domains.dataengineering.tools import profiling
+from agentsuite.domains.dataengineering.tools import query as warehouse_tools
 
 
 @pytest.fixture
@@ -131,7 +131,7 @@ class TestProfiling:
 
 class TestCostCeiling:
     def test_ceiling_blocks_an_oversized_scan(self, warehouse) -> None:  # type: ignore[no-untyped-def]
-        from agentkart.domains.dataengineering.warehouse.base import CostEstimate
+        from agentsuite.domains.dataengineering.warehouse.base import CostEstimate
 
         context = WarehouseContext(
             policy=SqlPolicy(max_rows=100, max_scan_gb=1.0),
