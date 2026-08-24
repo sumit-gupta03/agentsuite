@@ -590,7 +590,7 @@ overstated.
 
 ## Status
 
-Alpha (0.2.0). 375 tests, no network and no API key required to run them.
+Alpha (0.3.0). 378 tests, no network and no API key required to run them.
 
 **What is verified:** the agent loop, skills and precedence, the permission
 layer, workspace containment, injection containment, routing, audit and

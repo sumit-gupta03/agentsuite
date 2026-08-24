@@ -6,6 +6,16 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.3.0]
+
+### Changed
+
+- **The package is renamed from `agentkart` to `agentsuite`.** Imports become
+  `import agentsuite`; the console scripts are `agentsuite` and `ags` (the short
+  form is `ags` rather than `as`, which would collide with the GNU assembler).
+  There is no compatibility shim: `agentkart` 0.2.0 remains on PyPI at its final
+  release and is not updated further.
+
 ### Fixed
 
 - `Config.max_tokens` no longer carries an Anthropic-shaped default of 16,000.
