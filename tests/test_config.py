@@ -193,7 +193,9 @@ class TestWarehouseResolution:
     def test_missing_driver_names_the_extra(self, monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setitem(sys.modules, "duckdb", None)
         monkeypatch.delitem(
-            sys.modules, "agentsuite.domains.dataengineering.warehouse.duckdb_adapter", raising=False
+            sys.modules,
+            "agentsuite.domains.dataengineering.warehouse.duckdb_adapter",
+            raising=False,
         )
         with pytest.raises(WarehouseError, match=r"agent\[duckdb\]"):
             load_adapter("duckdb")

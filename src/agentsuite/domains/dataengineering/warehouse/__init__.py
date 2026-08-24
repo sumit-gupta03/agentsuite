@@ -16,14 +16,16 @@ from agentsuite.core.errors import ConfigError
 from ..errors import WarehouseError
 from .base import CostEstimate, TableRef, Warehouse
 
+_PKG = "agentsuite.domains.dataengineering.warehouse"
+
 #: adapter name -> "module:classname" inside this package
 REGISTRY: dict[str, str] = {
-    "sqlite": "agentsuite.domains.dataengineering.warehouse.sqlite_adapter:SQLiteWarehouse",
-    "duckdb": "agentsuite.domains.dataengineering.warehouse.duckdb_adapter:DuckDBWarehouse",
-    "postgres": "agentsuite.domains.dataengineering.warehouse.postgres_adapter:PostgresWarehouse",
-    "postgresql": "agentsuite.domains.dataengineering.warehouse.postgres_adapter:PostgresWarehouse",
-    "snowflake": "agentsuite.domains.dataengineering.warehouse.snowflake_adapter:SnowflakeWarehouse",
-    "bigquery": "agentsuite.domains.dataengineering.warehouse.bigquery_adapter:BigQueryWarehouse",
+    "sqlite": f"{_PKG}.sqlite_adapter:SQLiteWarehouse",
+    "duckdb": f"{_PKG}.duckdb_adapter:DuckDBWarehouse",
+    "postgres": f"{_PKG}.postgres_adapter:PostgresWarehouse",
+    "postgresql": f"{_PKG}.postgres_adapter:PostgresWarehouse",
+    "snowflake": f"{_PKG}.snowflake_adapter:SnowflakeWarehouse",
+    "bigquery": f"{_PKG}.bigquery_adapter:BigQueryWarehouse",
 }
 
 #: adapter name -> pip extra that provides its driver
